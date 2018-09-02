@@ -1,7 +1,8 @@
 var cmd = require('node-cmd');
 var fs = require('fs');
 const got = require('got');
-const currentScriptListing = fs.readFileSync('ScriptListing.json', 'utf8');
+var scriptListingFile = 'ScriptListing.json';
+const currentScriptListing = fs.readFileSync(scriptListingFile, 'utf8');
 (async () => {
     try {
         const freshScriptListing = await got('https://us-central1-makobot-web.cloudfunctions.net/buildScriptListing',{json: true});
@@ -12,7 +13,8 @@ const currentScriptListing = fs.readFileSync('ScriptListing.json', 'utf8');
 		console.log('currentScriptListing: ', currentScriptListing);
 		if(freshScriptListing != currentScriptListing)
 		{
-			 cmd.run( 'git add . && git commit -m \"testNODE\" && git push' );
+			fs.writeFileSync(scriptListingFile, freshScriptListing);
+			 cmd.run( 'git add . && git commit -m \"' + (new Date).getTime() + '\" && git push' );
 		}
         //=> '<!doctype html> ...'
     } 
