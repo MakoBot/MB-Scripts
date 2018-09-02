@@ -12,7 +12,7 @@ const currentScriptListing = fs.readFileSync(scriptListingFile, 'utf8');
 		if(freshScriptListingString != currentScriptListing)
 		{
 			console.log('we need to update');
-			fs.writeFileSync(scriptListingFile, freshScriptListing);
+			fs.writeFileSync(scriptListingFile, freshScriptListingString);
 			 cmd.run( 'git add . && git commit -m \"' + (new Date).getTime() + '\" && git push' );
 		}
 		else
