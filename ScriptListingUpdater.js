@@ -6,10 +6,10 @@ const currentScriptListing = fs.readFileSync(scriptListingFile, 'utf8');
 (async () => {
     try {
         const freshScriptListing = await got('https://us-central1-makobot-web.cloudfunctions.net/buildScriptListing',{json: true});
-		var freshScriptListingString = freshScriptListing;
+		var freshScriptListingString = JSON.stringify(freshScriptListing.body);
 		console.log('freshScriptListing: ', freshScriptListingString);
 		console.log('currentScriptListing: ', currentScriptListing);
-		if(freshScriptListing !== currentScriptListing)
+		if(freshScriptListingString != currentScriptListing)
 		{
 			console.log('we need to update');
 			fs.writeFileSync(scriptListingFile, freshScriptListing);
@@ -21,7 +21,7 @@ const currentScriptListing = fs.readFileSync(scriptListingFile, 'utf8');
     } 
 	catch (error) 
 	{
-        console.log(error.response.body);
+        console.log(error);
         //=> 'Internal server error ...'
     }
 })();
